@@ -203,3 +203,12 @@ docker info
 docker images
 ```
 <img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/c3e8041c-2264-4df7-a300-77c1d3b2b45b" />
+
+## Lab - Downloading docker image from Docker Hub Remote Registry to Local Docker Registry
+```
+docker images
+docker pull ubuntu:22.04
+docker images
+```
+
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/e49d8eab-a58e-4628-bec3-1f17b51707ac" />
