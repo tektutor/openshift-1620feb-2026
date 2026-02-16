@@ -441,3 +441,8 @@ docker exec -it lb-jegan hostname -i
 ```
 <img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/82d89419-f677-4de2-9f64-5332ea44a7f7" />
 
+For detailed nginx lb configuration, you may refer
+<pre>
+https://nginx.org/en/docs/http/load_balancing.html  
+</pre>
+
