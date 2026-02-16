@@ -181,4 +181,15 @@ docker --version
 docker images
 ```
 
-## Lab - 
+## Lab - Finding more details info about your docker installation
+```
+docker info
+```
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/f6573c79-13c9-4963-8fcc-3849759669b9" />
+
+
+## Lab - Listing the docker images from your local docker registry
+```
+docker images
+```
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/c3e8041c-2264-4df7-a300-77c1d3b2b45b" />
