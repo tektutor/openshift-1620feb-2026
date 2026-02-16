@@ -437,5 +437,6 @@ Let's find the IP Addresses of all web servers before configure lb container
 docker inspect nginx1-jegan | grep IPA
 docker inspect nginx2-jegan | grep IPA
 docker inspect -f {{.NetworkSettings.Networks.bridge.IPAddress}} nginx3-jegan
+docker exec -it lb-jegan hostname -i
 ```
 
