@@ -32,6 +32,9 @@
   - Storage (HDD/SDD)
 </pre>
 
+## Info - Hypervisor High-Level Architecture
+![Hypervisor](HypervisorHighLevelArchitecture.png)
+
 ## Info - Container Technology
 <pre>
 - is an application virtualization technology
