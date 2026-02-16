@@ -5,8 +5,6 @@
 sudo apt install -y apache2-utils
 ```
 
-## Lab - Creating users
-```
 ## Lab - Creating and Managing Users,Groups in OpenShift 
 ```
 htpasswd -cBb /tmp/htpasswd jegan-admin admin@123
