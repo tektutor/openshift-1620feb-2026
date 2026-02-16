@@ -380,7 +380,10 @@ apt update && apt install -y net-tools iputils-ping
 
 ifconfig
 ping 8.8.8.8
+
+exit
 ```
 <img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/72c2a9db-4dbc-43fd-98eb-5221119d8674" />
 <img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/c7cf2a9d-a96d-4bfd-ad7a-4cc1765ebb01" />
 <img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/8dc0e46e-c37f-4f0e-abf8-e28db9dcdb22" />
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/9f73be8c-d388-4edf-9c89-aae5d810aa4f" />
