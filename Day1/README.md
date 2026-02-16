@@ -274,6 +274,11 @@ Stopping multiple containers without calling out their names
 docker stop $(docker ps -q -f --name="ubuntu.*-jegan")
 ```
 
+Stopping every containers
+```
+docker stop $(docker ps -q)
+```
+
 ## Lab - Starting container
 Starting a single exited container
 ```
