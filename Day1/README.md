@@ -181,6 +181,16 @@ docker --version
 docker images
 ```
 
+## Lab - Troubleshooting Docker permission denied error
+When it prompts for password, type 'palmeto@123' without quotes. This commands forces a re login of your
+currenly logged in user to learn the newly joined user groups.
+
+```
+id
+su $USER
+id
+```
+
 ## Lab - Finding more details info about your docker installation
 ```
 docker info
