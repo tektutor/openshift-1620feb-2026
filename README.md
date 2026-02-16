@@ -50,3 +50,6 @@ Ubuntu 24.04 LTS 64-bit
 Docker CE 29.2.1
 Red Hat Openshift - 4.21.0
 </pre>
+
+#### Participants connecting to Server 2
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/7496f6b9-3b71-4005-b673-905cbbfcf144" />
