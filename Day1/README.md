@@ -421,9 +421,21 @@ Let's create the loadbalancer container
 ```
 docker run -d --name lb-jegan --hostname lb-jegan -p 8080:80 nginx:latest
 ```
+In the above command, the port 8080 represents the lab server port, the right side 80 represents on which port nginx web server is listening inside the container.  Hence, we can only change the port 8080 to some other available port on the lab server.
 
 List and see if all 4 containers are running
 ```
 docker ps | grep jegan
 ```
 <img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/c6f1c786-a9fd-4ddf-84ac-788ddc79f919" />
+
+At this point, nginx1-jegan,nginx2-jegan, nginx3-jegan and lb-jegan containers works as a web server by default.
+We need to configure the lb-jegan container to force it work as a Load Balancer.
+
+Let's find the IP Addresses of all web servers before configure lb container
+```
+docker inspect nginx1-jegan | grep IPA
+docker inspect nginx2-jegan | grep IPA
+docker inspect -f {{.NetworkSettings.Networks.bridge.IPAddress}} nginx3-jegan
+```
+
