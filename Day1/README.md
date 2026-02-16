@@ -453,4 +453,5 @@ docker cp lb-jegan:/etc/nginx/nginx.conf .
 cat nginx.conf
 ```
 <img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/0246c558-5d93-4183-a589-8270b0c5c043" />
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/7f87bf37-7e7d-438a-b09b-2bf416d993ae" />
 
