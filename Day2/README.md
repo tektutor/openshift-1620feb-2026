@@ -385,3 +385,34 @@ oc get pods -o wide | grep worker03
 ```
 <img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/2b265833-36d3-4960-ba47-27869b6bbc01" />
 <img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/15b29b90-70b5-4251-b240-0f92d7ce3099" />
+
+## Lab - Create a ClusterIP Internal service for your nginx deployment
+```
+oc project jegan
+oc get deploy
+oc expose deploy/nginx --type=ClusterIP --port=8080
+
+oc get services
+oc get service
+oc get svc
+oc describe svc/nginx
+
+# To test the internal service, let's create another deployment
+oc create deployment hello --image=image-registry.openshift-image-registry.svc:5000/openshift/hello:1.0
+
+# Get inside the hello pod shell
+oc exec -it pod/hello-9bc9955dc-2lj2z -- sh
+
+curl http://nginx:8080
+
+cat /etc/resolv.conf
+```
+
+The hello pod is able to resolve the nginx service name with the help of dns server running within Openshift.
+List all dns pods in openshift-dns namespace/project
+```
+oc get pods -n openshift-dns -o wide
+oc get svc -n openshift-dns
+```
+
+Accessing a service by its name is called Service Discovery, it is made possible by the DNS Service. There is one default-dns pod running every node.
