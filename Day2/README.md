@@ -324,6 +324,10 @@ oc get pods -w
 <img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/b5d01552-d3af-444c-8690-fa8f91ac5f09" />
 <img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/48076d33-9687-4997-8766-10beee8ceb43" />
 
+Alternatively, you can update the image as shown below
+```
+oc set image deploy/nginx nginx=image-registry.openshift-image-registry.svc:5000/openshift/nginx:1.30
+```
 
 Scale up the pods
 ```
