@@ -49,7 +49,7 @@
   - namespace and
     - helps us isolate one container from the other
   - CGroups ( Control group )
-    - helps us apply resource quota restrictions on the container leve
+    - helps us apply resource quota restrictions on the container level
     - example
       - we can restrict how much CPU a particular container can utilize at the max
       - we can restrict how much RAM a particular container can utilize at the max
