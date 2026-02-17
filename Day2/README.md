@@ -297,6 +297,8 @@ oc get deployments
 oc get deployment
 oc get deploy
 ```
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/ab8424e8-d057-4001-9f53-c4e7d0b7829b" />
+
 
 Let's list all the replicasets in your project
 ```
@@ -304,6 +306,7 @@ oc get replicasets
 oc get replicaset
 oc get rs
 ```
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/6f78174c-4492-44d0-960d-51305832e5ff" />
 
 Let's list all the pods
 ```
@@ -311,3 +314,4 @@ oc get pods
 oc get pod
 oc get po
 ```
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/74a4785b-a08d-49f7-88f4-e5441cec03e5" />
