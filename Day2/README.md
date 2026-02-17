@@ -119,7 +119,7 @@
 ![Openshift](openshiftArchitecture.png)
 ![Openshift](master-node.png)
 
-## Lab - Check your lab for openshift installtion
+## Lab - Check your lab for openshift installation
 ```
 kubectl version
 oc version
@@ -133,3 +133,18 @@ kubectl get nodes
 <img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/c2ca1b18-4f99-476d-9404-930c066f153e" />
 <img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/d9f859eb-62db-4645-bf71-2c70617ce0da" />
 
+
+## Lab - Finding node details
+```
+oc get nodes
+
+oc describe node master01.ocp4.palmeto.org
+oc describe node worker01.ocp4.palmeto.org
+
+```
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/f6c80a0e-51a1-4778-a24e-393d83375349" />
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/d1c65ec6-e0ac-456a-a26b-5ed1452102a3" />
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/92296a2d-86df-4ee0-b625-b79ddc3362fe" />
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/c79088df-aceb-4dc7-a191-2c19a5b0333c" />
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/e00c6bb2-d107-4aeb-a13a-7122a8ed4f75" />
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/d2d42ff7-7b72-44c8-9c3d-61b3de4df15d" />
