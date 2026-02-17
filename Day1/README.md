@@ -1,1 +1,593 @@
-# Day 1
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/927f8917-21b0-4bf8-9444-866d973621a1" /># Day 1
+
+## Info - Hypervisor Overview
+<pre>
+- is nothing but virtualization technology
+- with virtualization technology, we can run multiple OS within virtual machines on the same laptop/desktop/workstation/server
+- i.e many OS can actively run side by side
+- there are 2 types of Hypervisors
+  
+  1. Type 1 (a.k.a Bare Metal Hypervisor)
+  - this type of Hypervisor will be installed on the server directly without any OS
+  - Hypervisor itself supports a minimal OS 
+  - meant to be used by Workstations & Servers
+  - examples
+    - KVM
+    - Microsoft Hyper-V
+    - VMWare vSphere/vCenter
+  
+  2. Type 2 (a.k.a Hosted Hypervisor)
+  - can only be installed on top of some Host OS ( Windows, Linux or Mac OS-X )
+  - meant to be used by Laptops/Desktops and Workstations
+  - examples
+    - Oracle VirtualBox ( Windows, Linux & Mac OS-X )
+    - VMWare Workstation ( Windows & Linux )
+    - VMWare Fusion ( Mac OS-X )
+    - Parallels ( Mac OS-X )
+
+- this type of Virtualization is considered heavy-weight virtualization
+- the reason being, for each Virtual Machine, we need to allocate dedicated Hardware resources
+  - CPU Cores
+  - RAM
+  - Storage (HDD/SDD)
+</pre>
+
+## Info - Hypervisor High-Level Architecture
+![Hypervisor](HypervisorHighLevelArchitecture.png)
+
+## Info - Container Technology
+<pre>
+- is an application virtualization technology
+- each application runs in a separate container
+- each container uses about 8 namespaces
+- container are nothing but application process that runs in a separate namespace
+- all containers that runs on the same machines, share the OS Kernel and Hardware resources on the
+  underlying Host OS
+- as containers doesn't expect dedicated hardware resources, this type of virtualization is considered
+  light weight virtualization
+- in Linux Kernel that supports containers
+  - namespace and
+    - helps us isolate one container from the other
+  - CGroups ( Control group )
+    - helps us apply resource quota restrictions on the container level
+    - example
+      - we can restrict how much CPU a particular container can utilize at the max
+      - we can restrict how much RAM a particular container can utilize at the max
+</pre>
+
+## Info - Container Runtime
+<pre>
+- is a low-level software, that helps us manage containers and container images
+- container runtimes, depends on the Linux Kernel namespaces, Control Groups to supports containers
+- it is not so user-friendly, hence they are not used by end-users like us
+- examples
+  - runC 
+  - cRun
+  - CRI-O
+</pre>
+
+## Info - Container Engine
+<pre>
+- is a high-level software, that helps us manage containers and container images
+- container engines, depends on Container Runtimes to manage containers and container images
+- it is very user-friendly, hence almost all end-users only are aware of Container Engines
+- examples
+  - Docker 
+    - depends on containerd, which in turn depends on runC Container runtime
+  - Podman
+    - depends on CRI-O container runtime
+  - Containerd
+    - depends on runC container runtime
+</pre>
+
+## Info - Docker Overview
+<pre>
+- Docker Container Engine is developed in Golang by a company called Docker Inc
+- Docker comes in 2 flavours
+  1. Docker Community Edition - Docker CE ( opensource )
+  2. Docker Enteprise Edition - Docker EE ( commercial product that comes with Support )
+- Docker follows Client/Server Architecture
+- Client tool is docker
+- The Server is dockerd, that runs as a service in the background
+</pre>
+
+## Info - Docker High-Level Architecture
+![Docker](docker-architecture.jpg)
+![Docker](DockerHighLevelArchitecture.png)
+
+## Info - Docker Image
+<pre>
+- is a JSON file that refers one to many Docker Image Layers
+- is a blueprint/specification of containers
+- all the necessary software tools that are required to run an application are bundled as part of the Docker Image
+- this is similar to Window12OS.iso, RHEL-os.iso
+- with a Docker Image, we can create any number of containers
+- application + all dependent libraries + any dependencies => bundled => docker image
+- each image will have one or more image layers
+- image layers can be shared by multiple images
+</pre>
+![Docker](DockerLayers.png)
+
+## Info - Linux Namespaces
+<pre>
+- Linux supports a total of 8 types of namespaces
+- mnt
+  - useful to mount multiple folders as filesystem
+- pid
+  - a process may have a unique PID system-wide and a different pid within the namespace as 1
+- net
+  - isolates network stack
+  - ip addresses
+  - ports
+  - routing tables
+- ipc
+  - message queues
+  - mutex, semphares, etc
+- uts
+  - hostname
+  - domain names, etc
+- user
+  - isolates users and groups
+  - rootless containers use this namespace
+- cgroup
+  - virtualizes /proc/self/cgroup
+  - containers only see their cgroup hierarchy
+- time
+  - useful for checkpoint/restore containers
+  - system clock
+</pre>
+
+## Info - Docker Container
+<pre>
+- is a running instance of a Docker image
+- in order to create a Docker container, the respective Docker image must be present in the local docker registry
+- typically in Linux, local registry folder will be /var/lib/docker
+- each container represents a single application process
+- each container has its own network namespace
+- each container has its own pid namespace
+- each container has its own mnt namespace
+- each container has its own uts, ipc, user and cgroup namespaces
+- each container has got its own port range from 0-65536
+</pre>
+
+## Info - Docker Registry
+<pre>
+- is a collection of many Docker images
+- there are 3 types of Docker Registry
+  1. Local Docker Registry
+     - /var/lib/docker folder
+  2. Private Docker Registry ( optional )
+     - can be setup using Sonatype Nexus or JFrog Artifactory
+  3. Remote Docker Registry 
+     - it is a website maintained by Docker Inc organization that supports the Docker Engine
+     - it uses a Server similar to Sonatype Nexus or JFrog Artifactory
+</pre>
+
+## Info - Installing Docker CE in Ubuntu
+```
+# Add Docker's official GPG key:
+sudo apt update
+sudo apt install ca-certificates curl
+sudo install -m 0755 -d /etc/apt/keyrings
+sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
+sudo chmod a+r /etc/apt/keyrings/docker.asc
+
+# Add the repository to Apt sources:
+sudo tee /etc/apt/sources.list.d/docker.sources <<EOF
+Types: deb
+URIs: https://download.docker.com/linux/ubuntu
+Suites: $(. /etc/os-release && echo "${UBUNTU_CODENAME:-$VERSION_CODENAME}")
+Components: stable
+Signed-By: /etc/apt/keyrings/docker.asc
+EOF
+
+sudo apt update
+
+sudo apt install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin -y
+sudo usermod -aG docker $USER
+su $USER
+docker --version
+docker images
+```
+
+## Lab - Troubleshooting Docker permission denied error
+When it prompts for password, type 'palmeto@123' without quotes. This commands forces a re login of your
+currenly logged in user to learn the newly joined user groups.
+
+```
+id
+su $USER
+id
+```
+
+## Lab - Finding more details info about your docker installation
+```
+docker info
+```
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/f6573c79-13c9-4963-8fcc-3849759669b9" />
+
+
+## Lab - Listing the docker images from your local docker registry
+```
+docker images
+```
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/c3e8041c-2264-4df7-a300-77c1d3b2b45b" />
+
+## Lab - Downloading docker image from Docker Hub Remote Registry to Local Docker Registry
+```
+docker images
+docker pull ubuntu:22.04
+docker images
+```
+
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/e49d8eab-a58e-4628-bec3-1f17b51707ac" />
+
+
+## Lab - Deleting a docker image from local docker registry
+```
+docker images
+docker pull hello-world:latest
+docker images
+
+docker rmi hello-world:latest
+```
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/2897d7bd-74b3-4c73-abc1-699992d12131" />
+
+## Lab - Creating a container in background(daemon) mode
+```
+
+# Creating container and running it in background
+docker run -dit --name ubuntu1-jegan --hostname ubuntu1-jegan ubuntu:latest /bin/bash
+docker run -dit --name ubuntu2-jegan --hostname ubuntu2-jegan ubuntu:latest /bin/bash
+docker run -dit --name ubuntu3-jegan --hostname ubuntu3-jegan ubuntu:latest /bin/bash
+
+# List all currently running containers
+docker ps
+```
+
+Note
+<pre>
+run - will create and start the container
+dit - deattached interactive terminal
+name - is used on the docker level to manage docker containers
+hostname - is used on the OS level as an alternate to IP addresses
+ubuntu:latest - docker image with which we would like to create a container 
+/bin/bash - we would like run a bash terminal as the default application once the container starts running
+</pre>
+
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/97b0b6fc-e805-4f7f-8719-3f2805055451" />
+
+
+## Lab - Stopping container
+
+Stopping a single container
+```
+docker stop ubuntu1-jegan
+```
+
+Stopping multiple containers
+```
+docker stop ubuntu2-jegan ubuntu3-jegan
+```
+
+Stopping multiple containers without calling out their names
+```
+docker stop $(docker ps -q -f --name="ubuntu.*-jegan")
+```
+
+Stopping every containers
+```
+docker stop $(docker ps -q)
+```
+
+## Lab - Starting container
+Starting a single exited container
+```
+docker start ubuntu1-jegan
+```
+
+Starting multiple exited containers
+```
+docker start ubuntu2-jegan ubuntu3-jegan
+```
+
+Starting multiple containers without their names
+```
+docker start $(docker ps -aq)
+```
+
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/76b9b445-6c45-4a4b-af81-5da07cc4f2e4" />
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/5a577fc3-892b-452c-94a5-a261579ab36d" />
+
+## Lab - Restarting container
+
+Restart a container to force apply any config changes 
+```
+docker restart ubuntu1-jegan
+```
+
+Restart multiple containers
+```
+docker restart ubuntu1-jegan ubuntu2-jegan ubuntu3-jegan
+```
+
+Restart all containers
+```
+docker restart $(docker ps -q)
+```
+
+## Lab - Deleting containers
+
+Delete a single running container gracefuly
+```
+docker stop ubuntu1-jegan
+docker rm ubuntu1-jegan
+docker ps
+```
+
+Delete multiple containers
+```
+docker stop ubuntu1-jegan ubuntu2-jegan ubuntu3-jegan && docker rm ubuntu1-jegan ubuntu2-jegan ubuntu3-jegan
+```
+
+Delete multiple containers forcibly ( You will end up deleting containers created by others too so think twice )
+```
+docker rm -f $(docker ps -aq)
+```
+
+## Lab - Create a container and start it later on-demand
+```
+docker create -it --name ubuntu1-jegan --hostname ubuntu1-jegan ubuntu:latest /bin/bash
+
+# The below command won't show the ubuntu1-jegan container as it is not running
+docker ps | grep jegan
+
+#Start the container manually
+docker start ubuntu1-jegan
+
+#List and see the container in running state now
+docker ps | grep jegan
+```
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/c617008b-c6c8-4777-af92-1a03169c7e64" />
+
+## Lab - Finding container details
+```
+docker inspect ubuntu1-jegan
+```
+
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/8db76f16-2ea2-468b-a58b-3ce735765cb4" />
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/70a390a7-90e3-4bc1-8295-d45f09cdcc2a" />
+
+
+## Lab - Retrieving IP address of a docker container
+```
+docker inspect ubuntu1-jegan | grep IPA
+
+docker inspect -f {{.NetworkSettings.Networks.bridge.IPAddress}} ubuntu1-jegan
+```
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/bdc6e614-26d4-4b7a-8501-028640fc3e5b" />
+
+## Lab - Getting inside a container shell
+```
+docker ps | grep ubuntu1-jegan
+docker exec -it ubuntu1-jegan /bin/bash
+
+hostname
+hostname -i
+
+ifconfig
+
+apt update && apt install -y net-tools iputils-ping
+
+ifconfig
+ping 8.8.8.8
+
+exit
+```
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/72c2a9db-4dbc-43fd-98eb-5221119d8674" />
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/c7cf2a9d-a96d-4bfd-ad7a-4cc1765ebb01" />
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/8dc0e46e-c37f-4f0e-abf8-e28db9dcdb22" />
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/9f73be8c-d388-4edf-9c89-aae5d810aa4f" />
+
+## Lab - Creating a container in the foreground(interactive) mode
+```
+docker run -it --name ubuntu2-jegan --hostname ubuntu2-jegan ubuntu:latest /bin/bash
+hostname
+hostname -i
+ls
+exit
+docker ps
+```
+
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/366a8bf6-f66c-44c7-b386-5e3584945035" />
+
+## Lab - Setting up a Load Balancer with nginx
+
+We are going to create a load-balancer setup something like below
+<img width="75%" height="75%" alt="image" src="https://github.com/user-attachments/assets/7122c6b7-5820-407e-bdf6-5bac55c5b40d" />
+
+Let's create 3 web server containers using nginx:latest image from Docker Hub Remote Registry
+```
+docker run -d --name nginx1-jegan --hostname nginx1-jegan nginx:latest
+docker run -d --name nginx2-jegan --hostname nginx2-jegan nginx:latest
+docker run -d --name nginx3-jegan --hostname nginx3-jegan nginx:latest
+```
+
+List and see if the above containers are running as expected
+```
+docker ps | grep jegan
+```
+
+Let's create the loadbalancer container
+```
+docker run -d --name lb-jegan --hostname lb-jegan -p 8080:80 nginx:latest
+```
+In the above command, the port 8080 represents the lab server port, the right side 80 represents on which port nginx web server is listening inside the container.  Hence, we can only change the port 8080 to some other available port on the lab server.
+
+List and see if all 4 containers are running
+```
+docker ps | grep jegan
+```
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/c6f1c786-a9fd-4ddf-84ac-788ddc79f919" />
+
+At this point, nginx1-jegan,nginx2-jegan, nginx3-jegan and lb-jegan containers works as a web server by default.
+We need to configure the lb-jegan container to force it work as a Load Balancer.
+
+Let's find the IP Addresses of all web servers before configure lb container
+```
+docker inspect nginx1-jegan | grep IPA
+docker inspect nginx2-jegan | grep IPA
+docker inspect -f {{.NetworkSettings.Networks.bridge.IPAddress}} nginx3-jegan
+docker exec -it lb-jegan hostname -i
+```
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/82d89419-f677-4de2-9f64-5332ea44a7f7" />
+
+For detailed nginx lb configuration, you may refer
+<pre>
+https://nginx.org/en/docs/http/load_balancing.html  
+</pre>
+
+Let's copy the nginx.conf file from lb container
+```
+cd ~
+docker cp lb-jegan:/etc/nginx/nginx.conf .
+cat nginx.conf
+```
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/0246c558-5d93-4183-a589-8270b0c5c043" />
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/7f87bf37-7e7d-438a-b09b-2bf416d993ae" />
+
+You need to update the nginx.conf in your lb container as shown below
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/c7ee51b4-f868-41de-8631-f5e561081226" />
+
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/a1641707-e71f-45f1-8c58-95e3e3ff4e97" />
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/6de33aab-9d7f-480f-b68d-7534f6003ffe" />
+
+We need to configure the lb container with the updated nginx.conf file
+```
+cd ~
+cat nginx.conf
+docker cp nginx.conf lb-jegan:/etc/nginx/nginx.conf
+
+docker restart lb-jegan
+
+docker ps | grep lb-jegan
+```
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/2f909351-d1d7-4119-b264-bb8a8584f86b" />
+
+Let's find the location of index.html file within the nginx web servers
+```
+docker exec -it nginx1-jegan sh
+cd /usr/share/nginx/html
+cat index.html
+
+exit
+```
+
+Let's customize the web page on each nginx web servers to differentiate which webserver is responding
+```
+echo "Server 1" > index.html
+docker cp index.html nginx1-jegan:/usr/share/nginx/html/index.html
+
+echo "Server 2" > index.html
+docker cp index.html nginx2-jegan:/usr/share/nginx/html/index.html
+
+echo "Server 3" > index.html
+docker cp index.html nginx3-jegan:/usr/share/nginx/html/index.html
+```
+
+At this point, we are done with the lb setup. We need to test it now.
+
+You can test your web server responses directly
+```
+curl http://172.17.0.41:80
+curl http://172.17.0.43:80
+curl http://172.17.0.44:80
+```
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/ed9b7974-caa5-4120-a7e5-c8e99fe3c839" />
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/72cdab87-1b75-4af8-bfb6-e0a63ccb227a" />
+
+Open your web browser on your lab machine
+<pre>
+http://localhost:8080
+http://localhost:8080
+http://localhost:8080
+</pre>
+
+
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/b4994ae0-0a43-4180-b254-4edb68adae16" />
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/f6a4f294-a8e9-422b-bcfc-b49c49e25c99" />
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/1c00c53d-dbf0-4cc2-9d26-c1f528549e91" />
+
+## Lab - Building a custom docker image with our application binary
+```
+cd ~
+git clone https://github.com/tektutor/spring-ms.git
+cd spring-ms
+cat Dockerfile
+
+docker images | grep hello-microservice
+docker build -t tektutor/hello-microservice:1.0 .
+docker images | grep hello-microservice
+```
+
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/1d544adc-26d5-462d-8176-060a3896b789" />
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/2876fc38-2e08-4a4e-a899-98df9173af65" />
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/ffe8b78f-2f58-456a-83ba-8d831a7e66ac" />
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/9a53666e-9bd3-4b00-b5b4-78046500ac01" />
+
+## Lab - Volume mounting
+Let's create a mysql db server. When mariadb prompts for password type root@123 as password.
+```
+docker run -d --name mysql-jegan --hostname mysql-jegan -e MYSQL_ROOT_PASSWORD=root@123 -v /tmp/jegan/mysql:/var/lib/mysql mariadb:latest /bin/sh
+docker ps
+
+docker exec -it mysql-jegan sh
+mariadb -u root -p
+SHOW DATABASES;
+CREATE DATABASE tektutor;
+USE tektutor;
+SHOW TABLES;
+CREATE TABLE trainings ( id INT NOT NULL, name VARCHAR(100) NOT NULL, duration VARCHAR(100) NOT NULL, PRIMARY KEY(id));
+
+INSERT INTO trainings VALUES ( 1, "DevOps", "5 Days" );
+INSERT INTO trainings VALUES ( 2, "Linux Device Drivers", "5 Days" );
+SELECT * FROM trainings;
+exit
+exit
+```
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/36708e60-909e-4400-8025-4337d1aac4df" />
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/27b4be53-6c6c-4b59-915d-294fb23e9d80" />
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/38da1ce1-97e8-49a4-aded-8f0f1b927651" />
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/3651bf3e-7c97-4232-8e23-d9a941fd720d" />
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/aac65ce5-9af8-4ccf-af3b-fa5f58bafcf6" />
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/550174ee-075b-4165-9b03-28d612cc8437" />
+
+
+Let's remove the mysql-jegan container forcibly
+```
+docker rm -f mysql-jegan
+```
+
+Let's create a new mysql container
+```
+docker run -d --name mysql-jegan --hostname mysql-jegan -e MYSQL_ROOT_PASSWORD=root@123 -v /tmp/jegan/mysql:/var/lib/mysql mariadb:latest /bin/sh
+docker ps
+
+docker exec -it mysql-jegan sh
+mariadb -u root -p
+SHOW DATABASES;
+USE tektutor;
+SHOW TABLES;
+SELECT * FROM trainings;
+exit
+exit
+```
+
+Let's see if the database and tables are stored on our lab server
+```
+ls -l /tmp/jegan/mysql
+```
+
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/cd66d45f-5f89-4111-8972-c32162eedc75" />
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/21b1c6ca-1966-4b3b-83af-47f42bab8973" />
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/5baca400-8d06-49af-8021-93a312e6ca18" />
