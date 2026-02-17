@@ -358,3 +358,9 @@ oc describe pod/nginx-675c65fdcb-d9k4k
 
 <img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/c7a623bc-ba81-474b-978a-0170b5540d25" />
 <img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/e1a77efd-21b8-4306-99e5-d689863c600b" />
+
+## Lab - Checking the Pod IP and the node they are running
+```
+oc get pods -o wide
+```
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/de92f29c-a14b-4452-ba74-4912ca5eed67" />
