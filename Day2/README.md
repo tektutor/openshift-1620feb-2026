@@ -162,7 +162,7 @@ oc describe node worker01.ocp4.palmeto.org
 ## Info - API Server
 <pre>
 - this is the brain/heart of Kubernetes/Openshift cluster
-- this is a Pod 
+- this is a Pod that runs in all master nodes
 - API Server supports REST API for all the features supported in Openshift
 - all the Control Plane components they only talk to API Server via REST calls
 - API Server in returns responds by broadcasting events
@@ -172,6 +172,7 @@ oc describe node worker01.ocp4.palmeto.org
 ## Info - etcd database server
 <pre>
 - it is an opensource project
+- this is a Pod that runs in all master nodes
 - stores data in the form of key/value internally
 - it works as a cluster of etcd instances
 - to form a minimal etcd cluster it requires at 3 etcd db server instance
@@ -181,7 +182,24 @@ oc describe node worker01.ocp4.palmeto.org
 
 ## Info - Scheduler
 <pre>
-  
+- this is a Pod that runs in all master nodes
+- this is responsible to identify a healthy node where new pod can be scheduled
+- scheduler by itself won't schedule a pod onto a node, instead the scheduler sends its scheduling
+  recommendations via REST call to API Server
 </pre>
 
-## Info - 
+## Info - Controller Managers
+<pre>
+- this is a Pod that runs in all master nodes  
+- it is a group of many Controllers
+- each Controller manages one type of Openshift Resource
+- For example
+  - Deployment Controller manages Deployment resource
+  - ReplicaSet Controller manages ReplicaSet resource
+  - Endpoint Controller manages Endpoints resource
+  - Job Controller manages Job resource
+  - CronJob Controller manages CronJob resource
+  - DaemonSet Controller manages DaemonSet
+  - StatefulSet Controller manages StatefulSet
+  - Build Controller manages Build 
+</pre>
