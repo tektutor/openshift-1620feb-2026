@@ -119,3 +119,15 @@
 ![Openshift](openshiftArchitecture.png)
 ![Openshift](master-node.png)
 
+## Lab - Check your lab for openshift installtion
+```
+kubectl version
+oc version
+
+cat ~/openshift.txt
+oc login $(oc whoami --show-server) -u kubeadmin -p xkHzc-Pv36w-NcB5W-EwAd3 --insecure-skip-tls-verify=true
+
+oc get nodes
+kubectl get nodes
+```
+
