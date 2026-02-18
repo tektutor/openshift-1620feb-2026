@@ -1,5 +1,12 @@
 # Day 3
 
+## Info - Creating and Managing Users,Groups in OpenShift
+<pre>
+- Authentication in OpenShift is managed by authentication operator
+- authentication operator runs an oauth-server
+- oauth-server is where the users obtain oauth access token to authenticate into the API
+- oauth server can be configured to use identify providers such as htpasswd, LDAP, GitLab, etc.,  
+</pre>
 
 ## Demo - Installing htpassword utility in Ubuntu
 ```
