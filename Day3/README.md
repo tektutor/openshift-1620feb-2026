@@ -66,7 +66,7 @@ oc get pods
 oc get svc
 oc get nodes
 oc get users
-oc get identify
+oc get identity
 oc login $(oc whoami --show-server) -u jegan-developer -p dev@123 --insecure-skip-tls-verify=true
 oc login $(oc whoami --show-server) -u jegan-admin -p admin@123 --insecure-skip-tls-verify=true
 
