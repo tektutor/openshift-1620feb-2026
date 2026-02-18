@@ -35,12 +35,18 @@ oc get oauth cluster -o yaml > oauth.yml
 
 Edit the oauth.yml
 <pre>
-- htpasswd:
-    fileData:
-      name: htpasswd-secret
-  mappingMethod: claim
-  name: palmeto-users
-  type: HTPasswd
+apiVersion: config.openshift.io/v1
+kind: OAuth
+metadata:
+  name: cluster
+spec:
+  identityProviders:
+  - name: palmeto-users
+    mappingMethod: claim
+    type: HTPasswd
+    htpasswd:
+      fileData:
+        name: htpasswd-secret
 </pre>
 
 Given access permissions to the users created
