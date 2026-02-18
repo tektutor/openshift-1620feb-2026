@@ -155,7 +155,7 @@ Configure Ubuntu firewall to allow LDAP
 sudo ufw allow 389
 ```
 
-Integrate OpenLDAP with OpenShift v4.19 (ldap-idp.yaml)
+Integrate OpenLDAP with OpenShift v4.21 (ldap-idp.yaml)
 ```
 apiVersion: config.openshift.io/v1
 kind: OAuth
