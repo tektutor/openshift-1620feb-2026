@@ -150,6 +150,11 @@ ldapadd -x -D "cn=admin,dc=palmeto,dc=org" -W -f /tmp/base.ldif
 ldapadd -x -D "cn=admin,dc=palmeto,dc=org" -W -f /tmp/user.ldif
 ```
 
+Configure Ubuntu firewall to allow LDAP
+```
+sudo ufw allow 389
+```
+
 Integrate OpenLDAP with OpenShift v4.19 (ldap-idp.yaml)
 ```
 apiVersion: config.openshift.io/v1
