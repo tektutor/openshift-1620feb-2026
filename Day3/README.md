@@ -301,7 +301,6 @@ ldapwhoami -x -H ldap://192.168.10.200:389 -D "uid=jegan,ou=people,dc=palmeto,dc
 #Alternate approach
 slappasswd -s "root@123"
 
-
 # Check OAuth configuration
 oc get oauth cluster -o yaml | grep -A 20 "ldap:"
 
