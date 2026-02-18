@@ -321,6 +321,13 @@ oc login --username=jegan --password='root@123' --insecure-skip-tls-verify
 oc logs -n openshift-authentication deployment/oauth-openshift -f | grep -E "(jegan|ldap|bind|authentication|error)"
 ```
 
+## Lab - Deploying an application from GitHub source using docker strategy
+```
+oc project jegan
+oc new-app https://github.com/tektutor/spring-ms.git --strategy=docker
+```
+
+
 ## Lab - Configuring certain Openshift nodes for QA, Dev use
 
 Let's list all nodes
