@@ -197,8 +197,7 @@ spec:
         - uid
         name:
         - cn
-        email:
-        - mail
+        email: []
       bindDN: "cn=admin,dc=palmeto,dc=org"
       bindPassword:
         name: ldap-secret
