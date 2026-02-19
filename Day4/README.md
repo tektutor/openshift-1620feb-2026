@@ -471,15 +471,30 @@ affinity:
 
 Prevents new pods getting scheduled in to worker01
 ```
+oc get nodes
+oc describe node/worker01.ocp4.palmeto.org
 oc adm cordon worker01.ocp4.palmeto.org
+oc describe node/worker01.ocp4.palmeto.org
 ```
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/10ef1cdd-5b97-4b2a-a00e-e89284a7c213" />
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/ee8537a6-6a9f-4f31-890d-30b21e02dce7" />
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/0bd908d4-9faa-489e-9114-8ae2dc7fa164" />
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/f27572f6-5d2b-420b-a61b-e1b64eb294d1" />
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/dc1402a9-7ba8-480d-b696-08bc097fb737" />
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/53ba550a-9964-40c5-91bd-f6c51d6ee5f9" />
+
 
 Drain the node
 ```
 oc adm drain worker01.ocp4.palmeto.org --ignore-daemonsets --delete-emptydir-data
 ```
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/4be44b52-ec66-45ac-8062-8dd186f46524" />
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/13c7819c-326c-4558-a4bf-fbaadd6c25a5" />
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/e8c91b4c-a49a-4439-a8f3-6de4352f7757" />
 
 Once you are done with node maintenance
 ```
 oc adm uncordon worker01.ocp4.palmeto.org
 ```
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/808f6800-7d03-443c-95cb-3c22a6631295" />
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/b984dfc7-337b-45a2-9875-07faecbd39cc" />
