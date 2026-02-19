@@ -1,5 +1,29 @@
 # Day 4
 
+## Lab - Deploying an application into Openshift using source strategy
+```
+oc delete project jegan
+oc new-project jegan
+
+oc new-app --name=hello registry.access.redhat.com/ubi8/openjdk-17~https://github.com/tektutor/spring-ms.git --strategy=source
+# Create a public route for the service hello - this helps us access the application from outside the cluster
+oc expose svc/hello
+
+# Checking the build config strategy
+oc get bc/hello -o yaml
+oc get bc/hello -o yaml | grep Strategy
+oc logs -f bc/hello
+
+oc get deploy,pods,svc,route
+curl http://hello-jegan.apps.ocp4.palmeto.org
+```
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/d380edfd-8248-4e13-ad0a-3500da73748a" />
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/c8f0c186-52f0-4d9f-9008-1f1918bcb2e1" />
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/f18b5cd7-3051-4e94-9294-5ece895f0822" />
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/60913709-8461-4b40-ad63-8787c90baad5" />
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/ef19ce3a-9834-48ea-bf06-a7715bd4e4b0" />
+
+
 ## Lab - Creating an user group, add users to group, restrict access to project
 
 Let's login as administrator
