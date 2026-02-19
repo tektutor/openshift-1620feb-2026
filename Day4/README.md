@@ -146,10 +146,17 @@ Let's deploy nginx with nginx 1.28 version
 ```
 oc delete project jegan
 oc new-project jegan
-
+# Server 1
 oc create deployment nginx --image=image-registry.openshift-image-registry.svc:5000/openshift/nginx:1.28 --replicas=3 --dry-run=client -o yaml
 
+# Server 2
+oc create deployment nginx --image=image-registry.openshift-image-registry.svc:5000/openshift/nginx:1.30 --replicas=3 --dry-run=client -o yaml
+
+# Server 1
 oc create deployment nginx --image=image-registry.openshift-image-registry.svc:5000/openshift/nginx:1.28 --replicas=3 --dry-run=client -o yaml > nginx-deploy.yml
+
+# Server 2
+oc create deployment nginx --image=image-registry.openshift-image-registry.svc:5000/openshift/nginx:1.30 --replicas=3 --dry-run=client -o yaml > nginx-deploy.yml
 ```
 
 You can then update the nginx-deploy.yml as shown below
