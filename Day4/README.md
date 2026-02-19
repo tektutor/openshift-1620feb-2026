@@ -289,6 +289,11 @@ curl http://your-route-url
 <img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/551e3fef-67d7-4594-aeb6-54a067eb9016" />
 <img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/84f4a6ce-31ec-4b6f-906a-2273e3ba62ca" />
 
+## Info - ImageStream
+<pre>
+- Openshift ImageStream represents a folder inside Openshift's Internal Registry 
+- We can store multiple versions(tag) of the same image in a single OpenShift Imagestream
+</pre>
 
 ## Lab - Login to Openshift's Internal image registry
 
