@@ -35,7 +35,13 @@ oc get svc
 
 ## Accessing the node port service externally
 oc get nodes -o wide
-curl http://
+curl http://192.168.100.12:32478
+curl http://192.168.100.13:32478
+curl http://192.168.100.14:32478
+
+curl http://192.168.100.21:32478
+curl http://192.168.100.22:32478
+curl http://192.168.100.23:32478
 ```
 <img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/8bcdd013-324d-4ecb-8b14-2b910d634c24" />
 <img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/13e8a1a9-3a17-4376-8810-510370c9bc23" />
