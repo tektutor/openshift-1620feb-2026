@@ -11,7 +11,7 @@
 - Performs load-balancing
 - Supports Scheduling
 - Supports self-healing
-- Supports caling
+- Supports scaling
 - Supports Service Discovery
   - Containerized applications finds and talks to each other reliably irrespective of where they are running
 - examples
@@ -76,19 +76,20 @@
     - Ansible Playbook ( equally powerful )
     - Helm Package Manager 
     - Golang ( most preferred ) 
-- Kuberentes allows exposing application for
+- Kubernetes allows exposing application for
   - internal use via ClusterIP Service
   - external use via NodePort, LoadBalancer Service
 </pre>    
 
 ## Info - Red Hat Openshift
 <pre>
-- it is developed on top of Google Kuberenetes
+- it is developed on top of Google Kubernetes
 - in other words, Red Hat Openshift is a Red Hat's distribution of Kubernetes with many additional features
 - comes with world-wide support from Red Hat ( an IBM company )
 - Using the Kubernetes extensions ( Operators ), Openshift team has added many additional useful features
   - Web Console (GUI)
   - User Management
+  - Project ( developed on top of Kubernetes Namespace with access policy )
   - DeploymentConfig (deprecated in recent version)
   - Route ( a way to expose your applications to end-users using public url )
     - doesn't cost anyway, as it works like LoadBalancer but uses native openshift implementions
@@ -100,89 +101,313 @@
   - comes with an Internal Image Registry that can be accessed by all nodes in Openshift to push/pull container images
 - also supports Serverless declarative CI/CD Framework Tekton
 - Tekton is knative (Kubernetes Native project that supports CI/CD in K8s/Openshift )
-- Openshift supports all Kuberenetes Service
+- Openshift supports all Kubernetes Service
   - and Route
 </pre>
 
-## Info - Creating and Managing Users,Groups in OpenShift
+
+
+## Info - Kubernetes High-Level Architecture
+![Kubernetes](KubernetesArchitecture2.png)
+
+## Info - Red Hat Openshift High-Level Architecture
+![Openshift](openshiftArchitecture.png)
+![Openshift](master-node.png)
+
+## Lab - Check your lab for openshift installation
+```
+kubectl version
+oc version
+
+cat ~/openshift.txt
+oc login $(oc whoami --show-server) -u kubeadmin -p xkHzc-Pv36w-NcB5W-EwAd3 --insecure-skip-tls-verify=true
+
+oc get nodes
+kubectl get nodes
+```
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/c2ca1b18-4f99-476d-9404-930c066f153e" />
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/d9f859eb-62db-4645-bf71-2c70617ce0da" />
+
+
+## Lab - Finding node details
+```
+oc get nodes
+
+oc describe node master01.ocp4.palmeto.org
+oc describe node worker01.ocp4.palmeto.org
+
+```
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/f6c80a0e-51a1-4778-a24e-393d83375349" />
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/d1c65ec6-e0ac-456a-a26b-5ed1452102a3" />
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/92296a2d-86df-4ee0-b625-b79ddc3362fe" />
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/c79088df-aceb-4dc7-a191-2c19a5b0333c" />
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/e00c6bb2-d107-4aeb-a13a-7122a8ed4f75" />
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/d2d42ff7-7b72-44c8-9c3d-61b3de4df15d" />
+
+## Info - Control Plane Components
 <pre>
-- Authentication in OpenShift is managed by authentication operator
-- authentication operator runs an oauth-server
-- oauth-server is where the users obtain oauth access token to authenticate into the API
-- oauth server can be configured to use identify providers such as htpasswd, LDAP, GitLab, etc.,  
+- Control Plane components runs in the master node
+- each master nodes has the below Pods
+  1. API Server
+  2. etcd database server
+  3. scheduler
+  4. Controller Managers
 </pre>
 
-## Demo - Installing htpassword utility in Ubuntu
-```
-sudo apt install -y apache2-utils
-```
-
-## Lab - Creating and Managing Users,Groups in OpenShift 
-```
-htpasswd -cBb /tmp/htpasswd jegan-admin admin@123
-cat /tmp/htpasswd
-
-htpasswd -Bb /tmp/htpasswd jegan-dev dev@123
-cat /tmp/htpasswd
-
-oc login $(oc whoami --show-server) -u kubeadmin -p xkHzc-Pv36w-NcB5W-EwAd3 --insecure-skip-tls-verify=true
-
-oc create secret generic htpasswd-secret --from-file htpasswd=/tmp/htpasswd -n openshift-config
-oc get oauth cluster -o yaml > oauth.yml
-```
-
-Edit the oauth.yml
+## Info - API Server
 <pre>
-- htpasswd:
-    fileData:
-      name: htpasswd-secret
-  mappingMethod: claim
-  name: palmeto-users
-  type: HTPasswd
+- this is the brain/heart of Kubernetes/Openshift cluster
+- this is a Pod that runs in all master nodes
+- API Server supports REST API for all the features supported in Openshift
+- all the Control Plane components they only talk to API Server via REST calls
+- API Server in returns responds by broadcasting events
+- Each API Server updates the etcd database, it will result API Server sending broadcasting events
 </pre>
 
-Given access permissions to the users created
+## Info - etcd database server
+<pre>
+- it is an opensource project
+- this is a Pod that runs in all master nodes
+- stores data in the form of key/value internally
+- it works as a cluster of etcd instances
+- to form a minimal etcd cluster it requires at 3 etcd db server instance
+- hence, Openshift requires 3 master nodes
+- API Server stores the cluster and application state in the etcd database
+</pre>
+
+## Info - Scheduler
+<pre>
+- this is a Pod that runs in all master nodes
+- this is responsible to identify a healthy node where new pod can be scheduled
+- scheduler by itself won't schedule a pod onto a node, instead the scheduler sends its scheduling
+  recommendations via REST call to API Server
+</pre>
+
+## Info - Controller Managers
+<pre>
+- this is a Pod that runs in all master nodes  
+- it is a group of many Controllers
+- each Controller manages one type of Openshift Resource
+- Controllers does the application monitoring
+- For example
+  - Deployment Controller manages Deployment resource
+  - ReplicaSet Controller manages ReplicaSet resource
+  - Endpoint Controller manages Endpoints resource
+  - Job Controller manages Job resource
+  - CronJob Controller manages CronJob resource
+  - DaemonSet Controller manages DaemonSet
+  - StatefulSet Controller manages StatefulSet
+  - Build Controller manages Build 
+</pre>
+
+## Info - Pod
+<pre>
+- is a group of Containers
+- each Pod has atleast 2 Containers
+  - secret infra-container called pause container
+  - application container
+- in addition to the above containers, a Pod may also optionally have many other containers
+- in general, one Pod should have just one application container
+- though technically a Pod may contain many application container, it is not a best practice
+- IP Address is assigned on the Pod level
+  - meaning all containers that are part of a Pod shares the same IP address and Port range ( 0 - 65536 )
+</pre>
+
+## Info - Kubelet
+<pre>
+- this is not a Pod
+- this runs as a Service in every node ( master and worker nodes )
+- this interacts with CRI-O Container Runtime to pull, create and manage containers
+- this is also called as Kubelet Container Agent
+</pre>
+
+## Demo - Getting inside a node 
 ```
-oc replace -f oauth.yml
-oc get pods -n openshift-authentication
-oc login -u jegan-admin -p admin@123
-oc get pods
-oc get svc
-oc get nodes
-oc whoami
-oc login $(oc whoami --show-server) -u kubeadmin -p xkHzc-Pv36w-NcB5W-EwAd3 --insecure-skip-tls-verify=true
-oc adm policy add-cluster-role-to-user cluster-admin jegan-admin
-oc login -u jegan-admin -p admin@123
-oc get pods
-oc get svc
-oc get nodes
-oc get users
-oc get identify
-oc login $(oc whoami --show-server) -u jegan-developer -p dev@123 --insecure-skip-tls-verify=true
-oc login $(oc whoami --show-server) -u jegan-admin -p admin@123 --insecure-skip-tls-verify=true
+oc debug node/worker01.ocp4.palmeto.org
+chroot /host
+hostname
+hostname -i
+ls
 
-oc get users
-oc extract secret/htpassword-secret -n openshift-config --to /tmp --confirm
-cat /tmp/htpasswd
+podman version
+crictl version
+crictl images
 
-# Change password
-oc login $(oc whoami --show-server) -u kubeadmin -p xkHzc-Pv36w-NcB5W-EwAd3 --insecure-skip-tls-verify=true
-oc extract secret/htpasswd-secret -n openshift-config --to /tmp --confirm
-htpasswd -b /tmp/htpasswd jegan-developer developer@123
-cat /tmp/htpasswd
-oc set data secret/htpasswd-secret --from-file htpasswd=/tmp/htpasswd -n openshift-config
-oc get pods -n openshift-authentication
-oc login -u jegan-developer developer@123
-
-# Delete User
-oc login -u jegan-admin -p admin@123
-oc extract secret/htpasswd-secret -n openshift-config --to /tmp --confirm
-htpasswd -D /tmp/htpasswd jegan-developer
-cat /tmp/htpasswd
-oc set data secret/htpasswd-secret --from-file htpasswd=/tmp/htpasswd -n openshift-config
-oc delete identify palmeto-users:jegan-developer
-oc get identify
-oc delete user jegan-developer
-oc get users
-oc login -u jegan-developer -p developer@123
+crictl ps
 ```
+
+## Lab - Let's create a project to deploy our application
+In the command below, replace 'jegan' with your name
+```
+oc new-project jegan
+```
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/73255e9f-5f77-4295-b4cd-bd8ddfd528b9" />
+
+List all projects
+```
+oc get projects
+oc get project
+```
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/848f184f-a25c-4ba3-8349-548a335b914b" />
+
+Find more details about a project
+```
+oc describe project/jegan
+```
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/da9cb399-4b7d-4617-9d3d-ee79aa7ce819" />
+
+Switching between projects
+```
+oc project default
+```
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/8b7752c1-c07b-4cef-b5e7-e64a0702eead" />
+
+Finding the currently active project
+```
+oc project
+```
+
+Switch back to your project
+```
+oc project jegan
+```
+
+## Lab - Let's deploy our first stateless application into Openshift within your project
+```
+oc project jegan
+
+# Find the image present in your openshift cluster
+oc get imagestreams -n openshift | grep nginx
+
+# Server 1 (192.168.10.200)
+oc create deployment nginx --image=image-registry.openshift-image-registry.svc:5000/openshift/nginx:1.29 --replicas=3
+
+# Server 2 (192.168.10.201)
+oc create deployment nginx --image=image-registry.openshift-image-registry.svc:5000/openshift/nginx:1.30 --replicas=3
+```
+
+Let's list the deployments in your project
+```
+oc get deployments
+oc get deployment
+oc get deploy
+```
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/ab8424e8-d057-4001-9f53-c4e7d0b7829b" />
+
+
+Let's list all the replicasets in your project
+```
+oc get replicasets
+oc get replicaset
+oc get rs
+```
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/6f78174c-4492-44d0-960d-51305832e5ff" />
+
+Let's list all the pods
+```
+oc get pods
+oc get pod
+oc get po
+```
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/74a4785b-a08d-49f7-88f4-e5441cec03e5" />
+
+In case your pods are reporting ImagePullBack error, you may edit and replace the image as shown below
+```
+oc edit deploy/nginx
+oc get pods -w
+```
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/b5d01552-d3af-444c-8690-fa8f91ac5f09" />
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/48076d33-9687-4997-8766-10beee8ceb43" />
+
+Alternatively, you can update the image as shown below
+```
+oc set image deploy/nginx nginx=image-registry.openshift-image-registry.svc:5000/openshift/nginx:1.30
+```
+
+Scale up the pods
+```
+oc scale deploy/nginx --replicas=5
+oc get pods
+```
+
+Scale down the pod count
+```
+oc scale deploy/nginx --replicas=3
+oc get pods
+```
+
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/956625ee-264e-4f4e-8c39-600afa08e1fe" />
+
+## Lab - Find the application status
+```
+oc describe deploy/nginx
+oc describe rs/nginx-675c65fdcb
+oc describe pod/nginx-675c65fdcb-d9k4k
+```
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/944f13e7-a405-45b8-a5af-3b1569f5e5ed" />
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/9c2534a0-278b-4548-b28a-c171b1037d62" />
+
+
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/659b32cc-0876-4056-8fc9-43b3803cd7a3" />
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/73770cfe-8d06-442d-8b5e-9c6d6b6b671b" />
+
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/c7a623bc-ba81-474b-978a-0170b5540d25" />
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/e1a77efd-21b8-4306-99e5-d689863c600b" />
+
+## Lab - Checking the Pod IP and the node they are running
+```
+oc get pods -o wide
+```
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/de92f29c-a14b-4452-ba74-4912ca5eed67" />
+
+## Lab - Understand Pod Subnet allocated for each node
+```
+oc project jegan
+oc scale deploy/nginx --replicas=25
+
+oc get pods -o wide | grep master01
+oc get pods -o wide | grep master02
+oc get pods -o wide | grep master03
+```
+
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/38072042-3c4a-4a0a-b8e7-fa11932045b1" />
+
+Similarly, let's check the Pod Subnet for the worker nodes
+```
+oc get pods -o wide | grep worker01
+oc get pods -o wide | grep worker02
+oc get pods -o wide | grep worker03
+```
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/2b265833-36d3-4960-ba47-27869b6bbc01" />
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/15b29b90-70b5-4251-b240-0f92d7ce3099" />
+
+## Lab - Create a ClusterIP Internal service for your nginx deployment
+```
+oc project jegan
+oc get deploy
+oc expose deploy/nginx --type=ClusterIP --port=8080
+
+oc get services
+oc get service
+oc get svc
+oc describe svc/nginx
+
+# To test the internal service, let's create another deployment
+oc create deployment hello --image=image-registry.openshift-image-registry.svc:5000/openshift/hello:1.0
+
+# Get inside the hello pod shell
+oc exec -it pod/hello-9bc9955dc-2lj2z -- sh
+
+curl http://nginx:8080
+
+cat /etc/resolv.conf
+```
+
+The hello pod is able to resolve the nginx service name with the help of dns server running within Openshift.
+List all dns pods in openshift-dns namespace/project
+```
+oc get pods -n openshift-dns -o wide
+oc get svc -n openshift-dns
+```
+
+Accessing a service by its name is called Service Discovery, it is made possible by the DNS Service. There is one default-dns pod running every node.
