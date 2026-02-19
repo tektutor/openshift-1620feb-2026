@@ -140,6 +140,82 @@ ab -k -n 200000 -c 500 https://nginx-jegan.apps.ocp4.palmeto.org/
 <img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/5c2b7e73-8470-4526-9f72-84b3f522e225" />
 <img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/04583c99-cbed-4207-ae4e-6dc0948c9cab" />
 
+## Lab - Rolling update
+
+Let's deploy nginx with nginx 1.28 version
+```
+oc delete project jegan
+oc new-project jegan
+
+oc create deployment nginx --image=image-registry.openshift-image-registry.svc:5000/openshift/nginx:1.28 --replicas=3 --dry-run=client -o yaml
+
+oc create deployment nginx --image=image-registry.openshift-image-registry.svc:5000/openshift/nginx:1.28 --replicas=3 --dry-run=client -o yaml > nginx-deploy.yml
+```
+
+You can then update the nginx-deploy.yml as shown below
+<pre>
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: nginx
+  name: nginx
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - image: image-registry.openshift-image-registry.svc:5000/openshift/nginx:1.29
+        name: nginx  
+</pre>
+
+Let's create the nginx deployment in the declarative style using manifest(yaml) file
+```
+oc create -f nginx-deploy.yml --save-config
+oc get deploy --show-labels
+oc get rs --show-labels
+oc get pods --show-labels
+```
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/7644e1aa-7070-48f1-a6ed-a3ee031bab28" />
+
+Now let's update the image tag from 1.28 to 1.29 in the nginx-deploy.yml file as shown below
+```
+sed -i 's/nginx:1.28/nginx:1.29/'  nginx-deploy.yml
+cat nginx-deploy.yml
+```
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/67b6a0cf-8ec2-4cbc-84f1-74328b01a92f" />
+
+Now let's perform the rolling update ( i.e upgrade nginx from v1.28 to v1.29 )
+```
+oc apply -f nginx-deploy.yml
+oc rollout status deploy/nginx
+oc rollout history deploy/nginx
+
+oc get rs --show-labels
+oc get pods --show-labels
+oc get pods -o yaml | grep image
+```
+
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/757ac9fc-9f89-4645-ab72-ff7b64461d1b" />
+
+In case the newly deploy application version is found to be unstabe, you can rollback
+```
+oc rollout undo deploy/nginx
+```
+
+Rollback to any specific version
+```
+oc rollout history deploy/nginx
+oc rollout undo deploy/nginx --to-revision=2
+```
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/79d5b96f-44ba-4ac0-8fb7-a17e14b3ba35" />
+
 ## Lab - Creating an user group, add users to group, restrict access to project
 
 Let's login as administrator
@@ -147,7 +223,10 @@ Let's login as administrator
 oc login $(oc whoami --show-server) -u jegan-admin -p admin@123 --insecure-skip-tls-verify=true
 ```
 
-Create a group called
+Create a group calledRolling update
+-Upgrade deployed application from one version to another
+-Rollback deployed application from current to older versions
+-Checking rolling update status
 ```
 oc adm groups new dev-team
 oc get groups
