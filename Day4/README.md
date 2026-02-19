@@ -346,6 +346,27 @@ oc import-image nginx:1.26 \
 <img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/3c9a9391-e48b-4f58-97dc-e173c5b824ef" />
 
 
+## Lab - Pushing images from your local container registry to Openshift Internal registry
+
+
+```
+podman login -u $(oc whoami) -p $(oc whoami -t) default-route-openshift-image-registry.apps.ocp4.palmeto.org --tls-verify=false
+podman pull docker.io/tektutor/spring-ms:1.0
+podman images
+
+# In the below replace 'jegan' with your openshift project name
+podman tag docker.io/tektutor/spring-ms:1.0 default-route-openshift-image-registry.apps.ocp4.palmeto.org/jegan/spring-ms/jegan/spring-ms:1.0
+podman images
+
+podman push default-route-openshift-image-registry.apps.ocp4.palmeto.org/jegan/spring-ms:1.0 --tls-verify=false
+oc project jegan
+oc get imagestreams
+```
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/aff30370-62fa-4750-8710-32b4123c720e" />
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/0c0d5cfe-6773-457e-857b-205b82dfb134" />
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/8834e622-c766-4827-ab9a-486154e3ddc8" />
+
+
 ## Lab - Configuring certain Openshift nodes for QA, Dev use
 
 Let's list all nodes
