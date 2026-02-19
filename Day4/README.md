@@ -127,6 +127,10 @@ cd Day4/auto-scaling
 oc create -f hello-deploy.yml --save-config
 oc get pods
 oc create -f hello-hpa.yml --save-config
+
+oc expose deploy/nginx --port=8080
+oc expose svc/nginx
+oc get route
 ```
 
 We need to stress the pod with more traffic
