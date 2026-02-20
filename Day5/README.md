@@ -38,7 +38,9 @@ cat src/main.jsx
 oc delete project jegan
 oc new-project jegan
 
-oc new-app --name=reactjs-app https://github.com/tektutor/openshift-1620feb-2026.git \
+oc new-app \
+--name=reactjs-app \
+https://github.com/tektutor/openshift-1620feb-2026.git \
 --context-dir=Day5/reactjs \
 --strategy=docker
 
