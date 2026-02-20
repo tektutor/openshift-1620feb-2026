@@ -8,8 +8,10 @@ RUN npm install
 COPY . .
 RUN npm run build
 
-FROM nginxinc/nginx-unprivileged:alpine
+# Runtime stage
+FROM bitnamilegacy/nginx:1.29
 
-COPY --from=builder /app/build /usr/share/nginx/html
+# Copy Vite output (dist, NOT build)
+COPY --from=builder /app/dist /opt/bitnami/nginx/html
 
 EXPOSE 8080
