@@ -24,7 +24,30 @@ cd openshift-1620feb-2026
 
 ## Lab - Deploying ReactJS Application from CLI
 ```
+cd ~/openshift-1620feb-2026
+git pull
+cd Day5/reactjs
+tree
+cat Dockerfile
+cat index.html
+cat package.json
+cat vite.config.js
+cat src/App.jsx
+cat src/main.jsx
+
+oc delete project jegan
+oc new-project jegan
+
+oc new-app --name=reactjs-app https://github.com/tektutor/openshift-1620feb-2026.git --context-dir=Day5/reactjs --strategy=docker
+
+oc expose svc/reactjs-app
+oc logs -f bc/reactjs-app
 ```
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/2a29d14c-7429-487b-b56b-f8fbe056c742" />
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/ba4baa9a-30c9-4a3b-b537-408e25a2a6a1" />
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/b029f865-f30a-4489-9672-0431e3bc442e" />
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/7bbc921e-3ac7-4e37-8edd-0b2415a75268" />
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/b0b68905-a450-426e-8659-bdb24626e8b2" />
 
 ## Info - Installing NFS Server in Ubuntu
 ```
