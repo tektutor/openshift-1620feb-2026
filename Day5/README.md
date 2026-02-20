@@ -18,9 +18,17 @@ cd openshift-1620feb-2026
 ```
 
 ## Lab - Deploying NodeJS Application from Openshift Webconsole
-```
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/bd028577-b10b-497d-9bee-4ef9f37a44d0" />
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/5af97ff2-c408-492b-b7c9-34d5ea050c10" />
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/47e22a02-7cf5-464a-bae3-aeaae770067e" />
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/e3450b45-9a72-4a54-a3a4-e09828b6d2de" />
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/80a6b559-22d6-47d0-a6e6-a19ad9f871d3" />
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/5e1c37df-1933-43bd-bec7-5fb26ed70fd3" />
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/1ad6e9ef-93ca-4f13-9eaa-62bf67086da9" />
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/62596b40-d3eb-460d-956b-da479b58c8ad" />
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/67327859-6789-4a85-822c-0757bde67be3" />
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/3cdee87f-5032-451b-a6f3-e6de59fef30b" />
 
-```
 
 ## Lab - Deploying ReactJS Application from CLI
 ```
