@@ -1,5 +1,11 @@
 # Day 5
 
+## Lab - Deploying NodeJS Application from Openshift Webconsole
+```
+
+```
+
+
 ## Info - Openshift Network Policy
 <pre>
 - is essentially Kubernetes NetworkPolicy with some OpenShift-specific integrations
