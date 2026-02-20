@@ -202,3 +202,15 @@ oc delete -f deny-all-incoming-traffic.yml
 ```
 <img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/1bdafacb-3642-4aca-8067-b6a15d790bc0" />
 <img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/a3032534-1b4c-4d92-bb2d-45c65bfb5261" />
+
+## Lab - Allow incoming traffic from wordpress pods to mysql pods
+```
+cd ~/openshift-1620feb-2026
+git pull
+cd Day5/network-policy
+oc project jegan
+oc get pods
+
+cat allow-frontendpods-to-access-backend-pods.yml
+```
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/2df54956-0628-4e38-98e7-00a87948f8bd" />
