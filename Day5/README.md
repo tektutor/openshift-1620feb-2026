@@ -80,6 +80,26 @@ oc get deploy,rs,po,svc,route,pv,pvc,cm,secrets
 <img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/0417f135-ae86-4399-975e-2f56e0be1b3e" />
 <img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/dbdf0a69-b25e-46d4-b52b-04ff531fa70f" />
 
+## Lab - Creating a LoadBalancer external service
+```
+oc delete project jegan
+oc new-project jegan
+
+oc create deploy nginx --image=image-registry.openshift-image-registry.svc:5000/openshift/nginx:1.29 --replicas=3
+oc get pods
+
+# Create a loadbancer external service
+oc expose deploy/nginx --port=8080 --type=LoadBalancer
+oc get svc
+oc describe svc/nginx
+
+curl http://192.168.100.50:8080
+```
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/54357b31-1d4e-4eb2-b132-686456e3b744" />
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/045297a6-238a-491d-a8c2-a2230d61f3aa" />
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/c4521b0c-d8aa-4c76-b71f-be074d524a81" />
+
+
 ## Info - Openshift Network Policy
 <pre>
 - is essentially Kubernetes NetworkPolicy with some OpenShift-specific integrations
