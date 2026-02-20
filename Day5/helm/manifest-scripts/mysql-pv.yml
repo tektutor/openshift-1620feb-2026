@@ -1,16 +1,16 @@
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: mysql-pv-jegan # Replace 'jegan' with your name
+  name: mysql-pv-{{.Values.your_linux_username}}
   labels:
-    name: jegan  # Replace 'jegan' with your name
+    name: {{.Values.your_linux_username}} 
 spec:
   capacity:
-    storage: 100Mi
+    storage: {{.Values.nfs.server.mysql_disk_size}} 
   volumeMode: Filesystem
   accessModes:
   - ReadWriteOnce  # All the pods from a single node in the openshift cluster can read & write this external storage
   persistentVolumeReclaimPolicy: Retain
   nfs:
-    server: 192.168.10.200  # In case you are working on second server, you need to change this to 192.168.10.201
-    path: /var/nfs/jegan/mysql  # Replace jegan with your linux user
+    server: {{.Values.nfs.server.ip}} 
+    path: {{.Values.nfs.server.mysql_shared_path}} 

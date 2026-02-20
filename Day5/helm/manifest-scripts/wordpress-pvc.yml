@@ -1,14 +1,14 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: wordpress-pvc-jegan  # Replace 'jegan' with your name
+  name: wordpress-pvc-{{.Values.your_linux_username}}
 spec:
   selector:
     matchLabels:
-      name: jegan  # Replace 'jegan' with your name
+      name: {{.Values.your_linux_username}}
   accessModes:
   - ReadWriteOnce
   volumeMode: Filesystem
   resources:
     requests:
-      storage: 100Mi
+      storage: {{.Values.nfs.server.wordpress_disk_size}}

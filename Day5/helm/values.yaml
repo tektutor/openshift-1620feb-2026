@@ -1,0 +1,11 @@
+your_linux_username: jegan
+
+nfs:
+  server:
+    ip: "192.168.10.200"
+    mysql_shared_path: "/var/nfs/jegan/mariadb"
+    wordpress_shared_path: "/var/nfs/jegan/wordpress"
+    mysql_disk_size: "100Mi"
+    wordpress_disk_size: "100Mi"
+
+mysql_image_tag: "10.5" # In case of server 2 image tag is 10.5 otherwise you need to change this to 1.0

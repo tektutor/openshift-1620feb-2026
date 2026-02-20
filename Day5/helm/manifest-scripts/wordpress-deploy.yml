@@ -17,12 +17,11 @@ spec:
       volumes:
       - name: wordpress-storage
         persistentVolumeClaim:
-          claimName: wordpress-pvc-jegan  #Replace 'jegan' with your name
+          claimName: wordpress-pvc-{{.Values.your_linux_username}}
 
       containers:
       - name: wordpress
         image: image-registry.openshift-image-registry.svc:5000/openshift/wordpress:latest
-
         imagePullPolicy: IfNotPresent
 
         volumeMounts:
