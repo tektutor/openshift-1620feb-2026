@@ -60,6 +60,19 @@ oc logs -f
 <img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/696760f7-0a51-4db2-b3a7-b3ed9380c932" />
 <img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/cf2548e4-ba88-4f35-9460-f5c9f16f4f17" />
 
+Once you are done with this exercise, you can dicard the resources
+```
+cd ~/openshift-1620feb-2026
+cd Day5/wordpress-with-configmaps-and-secrets
+ls
+oc get deploy,rs,po,svc,route,pv,pvc,cm,secrets
+./undeploy.sh
+oc get deploy,rs,po,svc,route,pv,pvc,cm,secrets
+```
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/57f5734f-2a5a-4acb-a895-79c38fe35ec3" />
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/0417f135-ae86-4399-975e-2f56e0be1b3e" />
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/dbdf0a69-b25e-46d4-b52b-04ff531fa70f" />
+
 ## Info - Openshift Network Policy
 <pre>
 - is essentially Kubernetes NetworkPolicy with some OpenShift-specific integrations
