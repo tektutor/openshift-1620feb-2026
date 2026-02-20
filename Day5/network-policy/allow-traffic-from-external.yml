@@ -1,29 +1,15 @@
-# Default deny (blocks everything not explicitly allowed)
-apiVersion: networking.k8s.io/v1
-kind: NetworkPolicy
+apiVersion: policy.networking.k8s.io/v1alpha1
+kind: BaselineAdminNetworkPolicy
 metadata:
-  name: default-deny-ingress
-  namespace: jegan 
+  name: default
 spec:
-  podSelector: {}
-  policyTypes:
-  - Ingress
-  ingress: []                      # empty = deny all
+  subject:
+    namespaces: {}
 
----
-# Then allow only from ingress
-apiVersion: networking.k8s.io/v1
-kind: NetworkPolicy
-metadata:
-  name: allow-ingress-controller
-  namespace: jegan 
-spec:
-  podSelector: {}
   ingress:
-  - from:
-    - namespaceSelector:
+  - name: allow-from-router
+    action: Allow
+    from:
+    - namespaces:
         matchLabels:
           kubernetes.io/metadata.name: openshift-ingress
-    ports:
-    - protocol: TCP
-      port: 8080
