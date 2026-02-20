@@ -1,4 +1,4 @@
-o# Stage 1 - Build React App
+# Stage 1 - Build React App
 FROM node:18-alpine as build
 WORKDIR /app
 RUN mkdir /app/public
