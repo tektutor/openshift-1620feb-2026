@@ -32,7 +32,7 @@ spec:
             - name: MYSQL_REPLICATION_MODE
               value: "slave"
             - name: MYSQL_MASTER_HOST
-              value: "mysql-primary-0.mysql-primary-0-service"   # ← DNS name of primary pod
+              value: "mysql-primary-service"   # ← DNS name of primary pod
             - name: MYSQL_MASTER_PORT_NUMBER
               value: "3306"
             - name: MYSQL_REPLICATION_USER
