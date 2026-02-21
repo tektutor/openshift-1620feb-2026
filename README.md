@@ -17,10 +17,6 @@ Docker CE 29.2.1
 Red Hat Openshift - 4.21.0
 </pre>
 
-## Participants on Server 1
-<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/6fe443dc-c2bb-4749-a9be-3c2e47a51e9c" />
-
-
 ## Server 2 ( 192.168.10.201 )
 
 #### Hardware Configuration
@@ -37,6 +33,3 @@ Ubuntu 24.04 LTS 64-bit
 Docker CE 29.2.1
 Red Hat Openshift - 4.21.0
 </pre>
-
-#### Participants connecting to Server 2
-<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/7496f6b9-3b71-4005-b673-905cbbfcf144" />
